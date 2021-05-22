@@ -9,7 +9,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.example</groupId>
-    <artifactId>eurkaServer</artifactId>
+    <artifactId>eurka-server</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>eurkaServer</name>
     <description>Demo project for Spring Boot</description>
@@ -46,6 +46,24 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>com.spotify</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <configuration>
+                    <imageName>${project.artifactId}</imageName>
+                    <!--<dockerDirectory>src/main/docker</dockerDirectory>-->
+                    <baseImage>williamyeh/java8:latest</baseImage>
+                    <entryPoint>["java", "-jar", "/${project.build.finalName}.jar"]</entryPoint>
+                    <resources>
+                        <resource>
+                            <targetPath>/</targetPath>
+                            <directory>${project.build.directory}</directory>
+                            <include>${project.build.finalName}.jar</include>
+                        </resource>
+                    </resources>
+                    <dockerHost>http://192.168.110.128:2375</dockerHost>
+                </configuration>
             </plugin>
         </plugins>
     </build>
